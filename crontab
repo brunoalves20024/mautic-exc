@@ -1,0 +1,17 @@
+# Mautic Cron Jobs Configuration
+# PATH environment for basic commands
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+# BASH variables loaded by PAM via /etc/environment
+BASH_ENV=/etc/environment
+
+# Segments and Campaigns (Critical for Marketing Automation)
+*/5 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:segments:update --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+*/5 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:campaigns:update --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+*/5 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:campaigns:trigger --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+
+# Email Queue (If setting is "Queue", consumes messages and sends them via transport)
+* * * * * www-data /usr/local/bin/php /var/www/html/bin/console messenger:consume email mautic --time-limit=55 --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+
+# Background CSV Imports and Webhooks processing
+0 4 * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:import > /proc/1/fd/1 2>/proc/1/fd/2
+0 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:webhooks:process > /proc/1/fd/1 2>/proc/1/fd/2
