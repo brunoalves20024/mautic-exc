@@ -17,8 +17,12 @@ services:
       - MAUTIC_DB_PASSWORD=mautic
       - MAUTIC_DB_NAME=mautic
       - MAUTIC_URL=http://localhost:8080
+      - MAUTIC_REDIS_HOST=redis
+      - MAUTIC_REDIS_PORT=6379
+      - MESSENGER_TRANSPORT_DSN=redis://redis:6379/messages
     depends_on:
       - db
+      - redis
     restart: always
 
   db:
@@ -30,5 +34,12 @@ services:
       - db_data:/var/lib/mysql
     restart: always
 
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+
 volumes:
   db_data:
+  redis_data:

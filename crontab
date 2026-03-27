@@ -5,9 +5,9 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 BASH_ENV=/etc/environment
 
 # Segments and Campaigns (Critical for Marketing Automation)
-*/5 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:segments:update --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
-*/5 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:campaigns:update --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
-*/5 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:campaigns:trigger --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+0,15,30,45 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:segments:update --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+5,20,35,50 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:campaigns:update --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
+10,25,40,55 * * * * www-data /usr/local/bin/php /var/www/html/bin/console mautic:campaigns:trigger --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
 
 # Email Queue (If setting is "Queue", consumes messages and sends them via transport)
 * * * * * www-data /usr/local/bin/php /var/www/html/bin/console messenger:consume email mautic --time-limit=55 --env=prod > /proc/1/fd/1 2>/proc/1/fd/2
